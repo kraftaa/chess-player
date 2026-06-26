@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiet Chess</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="board-panel" aria-label="Chess board area">
+        <div class="topbar">
+          <div>
+            <h1>Quiet Chess</h1>
+            <p id="status">White to move</p>
+          </div>
+          <div class="mode" role="group" aria-label="Game mode">
+            <button id="modeComputer" class="active" type="button">Vs computer</button>
+            <button id="modeLocal" type="button">Two players</button>
+          </div>
+        </div>
+
+        <div id="capturedBlack" class="captured" aria-label="Captured black pieces"></div>
+        <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+        <div id="capturedWhite" class="captured" aria-label="Captured white pieces"></div>
+      </section>
+
+      <aside class="side-panel" aria-label="Game controls and move list">
+        <div class="controls">
+          <button id="newGame" type="button">New game</button>
+          <button id="undo" type="button">Undo</button>
+          <button id="hint" type="button">Hint</button>
+          <button id="flip" type="button">Flip board</button>
+        </div>
+
+        <div class="settings">
+          <label>Play as</label>
+          <div class="side-choice" role="group" aria-label="Choose your side">
+            <button id="playWhite" class="active" type="button">White</button>
+            <button id="playBlack" type="button">Black</button>
+          </div>
+
+          <label for="difficulty">Computer strength</label>
+          <input id="difficulty" type="range" min="1" max="5" value="3">
+          <div class="difficulty-meta">
+            <span id="difficultyLabel">Balanced</span>
+            <span id="difficultyDepth">Looks ahead 2 moves</span>
+          </div>
+        </div>
+
+        <div class="moves-wrap">
+          <h2>Moves</h2>
+          <ol id="moves" class="moves"></ol>
+        </div>
+
+        <div class="coach-wrap">
+          <h2>Coach</h2>
+          <p id="coach">Start by fighting for the center and developing your pieces.</p>
+        </div>
+
+        <div class="tutorial-wrap">
+          <h2>Tutorials</h2>
+          <div id="tutorialList" class="tutorial-list" aria-label="Chess tutorials"></div>
+          <div class="tutorial-card">
+            <h3 id="tutorialTitle">Opening Attack Plan</h3>
+            <p id="tutorialGoal">Control the center, develop pieces, castle, then attack with more than one piece.</p>
+            <ol id="tutorialSteps" class="tutorial-steps"></ol>
+            <p id="tutorialTip" class="tutorial-tip"></p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <dialog id="promotionDialog" aria-labelledby="promotionTitle">
+      <form method="dialog">
+        <h2 id="promotionTitle">Promote pawn</h2>
+        <div class="promotion-options">
+          <button value="q" type="submit">♕</button>
+          <button value="r" type="submit">♖</button>
+          <button value="b" type="submit">♗</button>
+          <button value="n" type="submit">♘</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

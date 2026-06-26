@@ -23,6 +23,7 @@ http://127.0.0.1:8017/index.html
 - Five difficulty levels: Beginner, Casual, Balanced, Strong, and Tough
 - Hint button that suggests a move and highlights the board
 - Coach panel with last-move feedback and material balance
+- Built-in tutorials for attack plans, traps, defenses, forks, pins, and back-rank mate
 - Last-move highlighting
 - Two-player mode on the same board
 - Legal move highlighting
