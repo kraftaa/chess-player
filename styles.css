@@ -308,11 +308,14 @@ input[type="range"] {
   grid-template-columns: 1fr 1fr;
   gap: 6px;
   margin-top: 10px;
+  max-height: 156px;
+  overflow: auto;
 }
 
 .tutorial-list button {
   min-height: 36px;
   padding: 0 8px;
+  font-size: 0.9rem;
   background: transparent;
   color: var(--ink);
   border-color: var(--line);
