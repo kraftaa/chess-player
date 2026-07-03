@@ -34,10 +34,40 @@ const difficultyProfiles = [
 
 const tutorials = [
   {
+    title: "White: Safe Attack Start",
+    goal: "Use a simple first-five-moves plan that prepares an attack without weakening your king.",
+    steps: ["1. e4: take the center and open your bishop.", "2. Nf3: develop and attack Black's e5 pawn.", "3. Bc4: aim at the weak f7 square.", "4. O-O: castle before the center opens.", "5. Re1 or d4: bring a rook to the center or open lines when ready."],
+    tip: "If you are not sure what to do, develop a new piece toward the center before moving the queen."
+  },
+  {
+    title: "Black: Solid Defense Start",
+    goal: "Answer White's center control, develop fast, and castle before attacking.",
+    steps: ["Against 1. e4, play e5 or c5 if you want sharper games.", "Develop a knight with Nc6 or Nf6.", "Develop a bishop to c5, b4, e7, or g7 depending on the position.", "Castle early, usually kingside.", "Only counterattack after your king is safe and pieces are out."],
+    tip: "As Black, first equalize: fight the center, avoid early pawn weaknesses, then counterattack."
+  },
+  {
     title: "Opening Attack Plan",
     goal: "Build an attack without exposing your own king.",
     steps: ["Play e4 or d4 to claim the center.", "Develop knights before moving the queen.", "Put a bishop on c4 or b5 to create pressure.", "Castle before opening the center.", "Attack only when two or three pieces are aiming at the king."],
     tip: "Do not start with queen tricks every game. Good attacks come from developed pieces."
+  },
+  {
+    title: "Opening Defense Checklist",
+    goal: "Survive the first 10 moves without falling for easy traps.",
+    steps: ["Check if your f2 or f7 pawn is being attacked.", "If their queen comes out early, attack it with a developing move.", "Do not move the f-pawn early unless you know the reason.", "Do not grab a pawn if it lets your king get checked.", "Castle before launching a pawn storm."],
+    tip: "Every turn ask: what is my opponent threatening against my king or queen?"
+  },
+  {
+    title: "Italian Attack Setup",
+    goal: "A beginner-friendly attacking setup with bishop pressure on f7.",
+    steps: ["1. e4 e5", "2. Nf3 Nc6", "3. Bc4: bishop points at f7.", "4. c3 or O-O: prepare d4 or make king safe.", "5. d4: open the center when your pieces are ready."],
+    tip: "The idea is not instant mate. The idea is fast development plus pressure on f7."
+  },
+  {
+    title: "London Setup",
+    goal: "A calm system opening that is hard to trick and easy to remember.",
+    steps: ["1. d4: control the center.", "2. Bf4: develop the bishop outside the pawn chain.", "3. e3: support the center.", "4. Nf3 and Bd3: develop pieces naturally.", "5. O-O: castle, then look for Ne5 or c4 breaks."],
+    tip: "Use the London when you want a safe start and fewer opening traps."
   },
   {
     title: "Scholar's Mate",
@@ -50,6 +80,12 @@ const tutorials = [
     goal: "Do not let queen and bishop gang up on f7.",
     steps: ["After Qh5, notice the attack on e5 and f7.", "Play Nc6 to defend e5.", "If Bc4 appears, play g6 to hit the queen.", "Develop Nf6 only when your e5 pawn and f7 square are safe.", "Never ignore a queen looking at your king pawns."],
     tip: "When the enemy queen comes out early, attack it while developing."
+  },
+  {
+    title: "When To Attack",
+    goal: "Know when an attack is real instead of just a hope.",
+    steps: ["Your king is safe or already castled.", "You have more attackers near their king than they have defenders.", "The center is closed or you control the center.", "Your queen is supported by pieces, not alone.", "You can calculate at least one check, capture, or threat after your move."],
+    tip: "A queen alone is not an attack. Queen plus bishop plus knight is dangerous."
   },
   {
     title: "Knight Fork",
@@ -746,7 +782,16 @@ function setupTutorials() {
   tutorials.forEach((tutorial, index) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = tutorial.title.replace("Scholar's Mate", "Scholar").replace("Opening Attack Plan", "Attack Plan").replace("Stop Scholar's Mate", "Stop Scholar");
+    button.textContent = tutorial.title
+      .replace("White: Safe Attack Start", "White Start")
+      .replace("Black: Solid Defense Start", "Black Start")
+      .replace("Opening Attack Plan", "Attack Plan")
+      .replace("Opening Defense Checklist", "Defense")
+      .replace("Italian Attack Setup", "Italian")
+      .replace("London Setup", "London")
+      .replace("Scholar's Mate", "Scholar")
+      .replace("Stop Scholar's Mate", "Stop Scholar")
+      .replace("When To Attack", "Attack Timing");
     button.addEventListener("click", () => renderTutorial(index));
     tutorialListEl.append(button);
   });
