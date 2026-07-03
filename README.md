@@ -29,3 +29,13 @@ http://127.0.0.1:8017/index.html
 - Legal move highlighting
 - Check, checkmate, stalemate, castling, en passant, and promotion
 - Undo, board flip, move list, and captured pieces
+
+## Install on phone
+
+Host the app on HTTPS, for example with GitHub Pages, then open it on your phone.
+
+On iPhone: open the site in Safari, tap Share, then Add to Home Screen.
+
+On Android Chrome: open the site, tap the menu, then Add to Home screen or Install app.
+
+After the first load, the app can open from the home screen and its core files are cached for offline use.
