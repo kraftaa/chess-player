@@ -459,7 +459,12 @@ function render() {
       square.dataset.c = c;
       square.setAttribute("role", "gridcell");
       square.setAttribute("aria-label", `${algebraic({ r, c })}${piece ? ` ${piece.color === "w" ? "white" : "black"} ${piece.type}` : ""}`);
-      square.textContent = piece ? symbols[piece.color][piece.type] : "";
+      if (piece) {
+        const pieceEl = document.createElement("span");
+        pieceEl.className = `piece piece-${piece.color} piece-${piece.type}`;
+        pieceEl.textContent = symbols[piece.color][piece.type];
+        square.append(pieceEl);
+      }
       if (selected && selected.r === r && selected.c === c) square.classList.add("selected");
       if (state.lastMove && (sameSquare(state.lastMove.from, { r, c }) || sameSquare(state.lastMove.to, { r, c }))) {
         square.classList.add("last-move");

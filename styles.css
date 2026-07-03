@@ -151,8 +151,22 @@ h2 {
   place-items: center;
   min-height: 0;
   padding: 0;
-  font-size: clamp(2rem, 8vw, 4.5rem);
   line-height: 1;
+}
+
+.piece {
+  display: block;
+  font-size: clamp(2rem, 7.2vw, 4.15rem);
+  line-height: 1;
+  transform: translateY(-0.02em);
+}
+
+.piece-p {
+  font-size: clamp(1.85rem, 6.4vw, 3.65rem);
+}
+
+.piece-b.piece-p {
+  transform: translateY(-0.04em) scale(0.94);
 }
 
 .square.dark {
