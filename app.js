@@ -565,7 +565,9 @@ function render() {
   renderCaptured();
   renderCoach();
   document.getElementById("undo").disabled = thinking || state.history.length === 0;
-  document.getElementById("hint").disabled = thinking || legal.length === 0 || (vsComputer && state.turn === "b");
+  const hintDisabled = thinking || legal.length === 0 || isComputerTurn();
+  document.getElementById("hint").disabled = hintDisabled;
+  document.getElementById("attackHint").disabled = hintDisabled;
   renderLessonControls();
 }
 
@@ -690,6 +692,63 @@ function chooseComputerMove(color = state.turn) {
     }
   }
   return best;
+}
+
+
+function chooseAttackMove(game, color) {
+  const moves = legalMoves(game, color);
+  if (!moves.length) return null;
+  const best = moves.map(move => ({ move, score: attackScore(game, move, color) }))
+    .sort((a, b) => b.score - a.score)[0];
+  if (best.score < 70) return chooseBestMove(game, color, 2);
+  return best.move;
+}
+
+function attackScore(game, move, color) {
+  const piece = pieceAt(game, move.from);
+  const captured = move.enPassant ? game.grid[move.from.r][move.to.c] : pieceAt(game, move.to);
+  const test = cloneState(game);
+  applyMove(test, move, false);
+  let score = color === "w" ? evaluate(test) : -evaluate(test);
+  if (captured) score += 180 + values[captured.type] - values[piece.type] / 6;
+  if (isInCheck(test, opponent(color))) score += legalMoves(test, opponent(color)).length ? 260 : 5000;
+  if (move.promotion) score += 700;
+  if (move.castle) score += 40;
+
+  const movedPiece = pieceAt(test, move.to);
+  const enemyKing = findKing(test, opponent(color));
+  const attacks = attacksFrom(test, move.to);
+  for (const target of attacks) {
+    const targetPiece = pieceAt(test, target);
+    if (targetPiece && targetPiece.color !== color) score += values[targetPiece.type] / 2;
+    if (enemyKing && Math.abs(target.r - enemyKing.r) <= 1 && Math.abs(target.c - enemyKing.c) <= 1) score += 95;
+  }
+  if (movedPiece?.type === "q" || movedPiece?.type === "r") score += openLinePressure(test, move.to, color);
+  return score;
+}
+
+function openLinePressure(game, from, color) {
+  let pressure = 0;
+  const enemyKing = findKing(game, opponent(color));
+  if (!enemyKing) return pressure;
+  if (from.r === enemyKing.r || from.c === enemyKing.c) pressure += 90;
+  if (Math.abs(from.r - enemyKing.r) === Math.abs(from.c - enemyKing.c)) pressure += 90;
+  return pressure;
+}
+
+function describeAttackHint(game, move, color) {
+  const piece = pieceAt(game, move.from);
+  const captured = move.enPassant ? game.grid[move.from.r][move.to.c] : pieceAt(game, move.to);
+  const test = cloneState(game);
+  applyMove(test, move, false);
+  const pieceName = piece.type === "p" ? "pawn" : piece.type.toUpperCase();
+  const moveText = `${algebraic(move.from)} to ${algebraic(move.to)}`;
+  if (legalMoves(test, opponent(color)).length === 0 && isInCheck(test, opponent(color))) return `Attack hint: ${moveText}. This is checkmate.`;
+  if (isInCheck(test, opponent(color))) return `Attack hint: ${moveText}. It gives check, so the opponent must answer your threat.`;
+  if (captured) return `Attack hint: ${moveText}. Your ${pieceName} wins the ${captured.type.toUpperCase()} on ${algebraic(move.to)}.`;
+  const attacks = attacksFrom(test, move.to).map(pos => pieceAt(test, pos)).filter(target => target && target.color !== color && target.type !== "p");
+  if (attacks.length) return `Attack hint: ${moveText}. It creates pressure on an important piece.`;
+  return `Attack hint: ${moveText}. There is no direct tactic, so this is the most active safe move.`;
 }
 
 function chooseBestMove(game, color, depth = 2) {
@@ -1040,7 +1099,17 @@ document.getElementById("hint").addEventListener("click", () => {
   coachMove = move;
   selected = move.from;
   legalForSelected = legalMoves(state).filter(item => sameSquare(item.from, move.from));
-  coachText = `Try ${algebraic(move.from)} to ${algebraic(move.to)}.`;
+  coachText = `Best hint: ${algebraic(move.from)} to ${algebraic(move.to)}. This is the best overall move, not always an attack.`;
+  render();
+});
+document.getElementById("attackHint").addEventListener("click", () => {
+  if (thinking || isComputerTurn()) return;
+  const move = chooseAttackMove(state, state.turn);
+  if (!move) return;
+  coachMove = move;
+  selected = move.from;
+  legalForSelected = legalMoves(state).filter(item => sameSquare(item.from, move.from));
+  coachText = describeAttackHint(state, move, state.turn);
   render();
 });
 document.getElementById("modeComputer").addEventListener("click", () => {

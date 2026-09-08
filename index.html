@@ -8,10 +8,10 @@
     <meta name="apple-mobile-web-app-title" content="Quiet Chess">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Quiet Chess</title>
-    <link rel="manifest" href="manifest.json?v=6">
+    <link rel="manifest" href="manifest.json?v=7">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" href="icon-192.png" type="image/png">
-    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles.css?v=7">
   </head>
   <body>
     <main class="app">
@@ -36,7 +36,8 @@
         <div class="controls">
           <button id="newGame" type="button">New game</button>
           <button id="undo" type="button">Undo</button>
-          <button id="hint" type="button">Hint</button>
+          <button id="hint" type="button">Best hint</button>
+          <button id="attackHint" type="button">Attack hint</button>
           <button id="flip" type="button">Flip board</button>
         </div>
 
@@ -98,7 +99,7 @@
       </form>
     </dialog>
 
-    <script src="app.js?v=6"></script>
+    <script src="app.js?v=7"></script>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
