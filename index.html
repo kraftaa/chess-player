@@ -8,10 +8,10 @@
     <meta name="apple-mobile-web-app-title" content="Quiet Chess">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Quiet Chess</title>
-    <link rel="manifest" href="manifest.json?v=5">
+    <link rel="manifest" href="manifest.json?v=8">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" href="icon-192.png" type="image/png">
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=8">
   </head>
   <body>
     <main class="app">
@@ -36,7 +36,8 @@
         <div class="controls">
           <button id="newGame" type="button">New game</button>
           <button id="undo" type="button">Undo</button>
-          <button id="hint" type="button">Hint</button>
+          <button id="hint" type="button">Best hint</button>
+          <button id="attackHint" type="button">Attack hint</button>
           <button id="flip" type="button">Flip board</button>
         </div>
 
@@ -62,8 +63,31 @@
           <div class="tutorial-card">
             <h3 id="tutorialTitle">Opening Attack Plan</h3>
             <p id="tutorialGoal">Control the center, develop pieces, castle, then attack with more than one piece.</p>
+            <div id="lessonControls" class="lesson-controls">
+              <button id="lessonStart" type="button">Show on board</button>
+              <button id="lessonPrev" type="button">Previous</button>
+              <button id="lessonNext" type="button">Next</button>
+            </div>
+            <p id="lessonCurrent" class="lesson-current"></p>
             <ol id="tutorialSteps" class="tutorial-steps"></ol>
             <p id="tutorialTip" class="tutorial-tip"></p>
+          </div>
+        </div>
+
+        <div class="practice-wrap">
+          <h2>Practice</h2>
+          <div class="practice-actions">
+            <button id="attackPractice" type="button">Attack practice</button>
+            <button id="defensePractice" type="button">Defense practice</button>
+          </div>
+          <div class="practice-card">
+            <h3 id="practiceTitle">Attack or defense practice</h3>
+            <p id="practiceGoal">Pick a practice mode to get a position and find the right move on the board.</p>
+            <p id="practiceFeedback" class="practice-feedback">No practice started.</p>
+            <div class="practice-actions compact">
+              <button id="practiceHint" type="button">Show clue</button>
+              <button id="practiceNext" type="button">Next position</button>
+            </div>
           </div>
         </div>
 
@@ -92,7 +116,7 @@
       </form>
     </dialog>
 
-    <script src="app.js?v=5"></script>
+    <script src="app.js?v=8"></script>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

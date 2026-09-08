@@ -1,10 +1,10 @@
-const CACHE_NAME = "quiet-chess-v5";
+const CACHE_NAME = "quiet-chess-v8";
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=5",
-  "./app.js?v=5",
-  "./manifest.json?v=5",
+  "./styles.css?v=8",
+  "./app.js?v=8",
+  "./manifest.json?v=8",
   "./icon-192.png",
   "./icon-512.png"
 ];

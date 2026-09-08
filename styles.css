@@ -10,6 +10,9 @@
   --selected: #f5c84b;
   --last-move: rgba(245, 200, 75, 0.58);
   --coach-move: rgba(80, 133, 194, 0.48);
+  --lesson-from: rgba(30, 92, 145, 0.48);
+  --lesson-to: rgba(246, 174, 45, 0.66);
+  --practice-target: rgba(151, 93, 45, 0.42);
   --hint: rgba(25, 55, 44, 0.32);
   --danger: #a5483e;
   --button: #26382f;
@@ -190,9 +193,24 @@ h2 {
   box-shadow: inset 0 0 0 999px var(--coach-move);
 }
 
+.square.lesson-from {
+  box-shadow: inset 0 0 0 999px var(--lesson-from);
+}
+
+.square.lesson-to {
+  box-shadow: inset 0 0 0 999px var(--lesson-to);
+}
+
+.square.practice-target {
+  box-shadow: inset 0 0 0 999px var(--practice-target);
+}
+
 .square.selected,
 .square.selected.last-move,
-.square.selected.coach-move {
+.square.selected.coach-move,
+.square.selected.lesson-from,
+.square.selected.lesson-to,
+.square.selected.practice-target {
   background: var(--selected);
 }
 
@@ -311,6 +329,67 @@ input[type="range"] {
   padding-top: 16px;
 }
 
+.practice-wrap {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.practice-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.practice-actions.compact {
+  margin-top: 12px;
+}
+
+.practice-actions button {
+  min-height: 36px;
+  padding: 0 8px;
+  font-size: 0.9rem;
+}
+
+.practice-card {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbf8f1;
+}
+
+.practice-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.practice-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.practice-feedback {
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid rgba(38, 56, 47, 0.18);
+  border-radius: 6px;
+  background: #fffaf0;
+}
+
+.practice-feedback.success {
+  color: #365344;
+  background: #edf7ec;
+}
+
+.practice-feedback.miss {
+  color: #7e6658;
+  background: #fff4df;
+}
+
 .tutorial-wrap {
   margin-top: 18px;
   border-top: 1px solid var(--line);
@@ -352,6 +431,27 @@ input[type="range"] {
 .tutorial-card h3 {
   margin: 0;
   font-size: 1rem;
+}
+
+.lesson-controls {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.lesson-controls button {
+  min-height: 36px;
+  padding: 0 8px;
+  font-size: 0.9rem;
+}
+
+.lesson-current {
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid rgba(38, 56, 47, 0.18);
+  border-radius: 6px;
+  background: #fffaf0;
 }
 
 .tutorial-card p,
@@ -446,5 +546,10 @@ dialog::backdrop {
 
   .moves {
     height: 180px;
+  }
+
+  .lesson-controls,
+  .practice-actions {
+    grid-template-columns: 1fr;
   }
 }
