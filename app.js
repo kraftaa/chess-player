@@ -23,6 +23,11 @@ const tutorialTitleEl = document.getElementById("tutorialTitle");
 const tutorialGoalEl = document.getElementById("tutorialGoal");
 const tutorialStepsEl = document.getElementById("tutorialSteps");
 const tutorialTipEl = document.getElementById("tutorialTip");
+const lessonControlsEl = document.getElementById("lessonControls");
+const lessonStartEl = document.getElementById("lessonStart");
+const lessonPrevEl = document.getElementById("lessonPrev");
+const lessonNextEl = document.getElementById("lessonNext");
+const lessonCurrentEl = document.getElementById("lessonCurrent");
 
 const difficultyProfiles = [
   { name: "Beginner", detail: "Makes mistakes", depth: 0, noise: 260, blunder: 0.38, moveLimit: 10 },
@@ -37,12 +42,30 @@ const tutorials = [
     title: "White: Safe Attack Start",
     goal: "Use a simple first-five-moves plan that prepares an attack without weakening your king.",
     steps: ["1. e4: take the center and open your bishop.", "2. Nf3: develop and attack Black's e5 pawn.", "3. Bc4: aim at the weak f7 square.", "4. O-O: castle before the center opens.", "5. Re1 or d4: bring a rook to the center or open lines when ready."],
+    line: [
+      { from: "e2", to: "e4", note: "Move the white pawn from e2 to e4. This takes center space and opens the bishop." },
+      { from: "e7", to: "e5", note: "Black answers in the center." },
+      { from: "g1", to: "f3", note: "Move the knight from g1 to f3. It attacks e5 and develops a piece." },
+      { from: "b8", to: "c6", note: "Black protects the e5 pawn." },
+      { from: "f1", to: "c4", note: "Move the bishop to c4. It points at the weak f7 pawn." },
+      { from: "g8", to: "f6", note: "Black develops and fights the center." },
+      { from: "e1", to: "g1", note: "Castle kingside: king goes to g1 and rook moves to f1 automatically." }
+    ],
     tip: "If you are not sure what to do, develop a new piece toward the center before moving the queen."
   },
   {
     title: "Black: Solid Defense Start",
     goal: "Answer White's center control, develop fast, and castle before attacking.",
     steps: ["Against 1. e4, play e5 or c5 if you want sharper games.", "Develop a knight with Nc6 or Nf6.", "Develop a bishop to c5, b4, e7, or g7 depending on the position.", "Castle early, usually kingside.", "Only counterattack after your king is safe and pieces are out."],
+    line: [
+      { from: "e2", to: "e4", note: "White starts with e4, so Black must answer the center." },
+      { from: "e7", to: "e5", note: "Move Black's pawn from e7 to e5. This fights for the center." },
+      { from: "g1", to: "f3", note: "White develops a knight and attacks e5." },
+      { from: "b8", to: "c6", note: "Move the black knight to c6 to defend e5." },
+      { from: "f1", to: "c4", note: "White aims the bishop at f7. Notice the threat." },
+      { from: "g8", to: "f6", note: "Develop the other knight, but always watch the f7 square." },
+      { from: "f8", to: "c5", note: "Move the bishop to c5 so Black develops and prepares castling." }
+    ],
     tip: "As Black, first equalize: fight the center, avoid early pawn weaknesses, then counterattack."
   },
   {
@@ -61,24 +84,65 @@ const tutorials = [
     title: "Italian Attack Setup",
     goal: "A beginner-friendly attacking setup with bishop pressure on f7.",
     steps: ["1. e4 e5", "2. Nf3 Nc6", "3. Bc4: bishop points at f7.", "4. c3 or O-O: prepare d4 or make king safe.", "5. d4: open the center when your pieces are ready."],
+    line: [
+      { from: "e2", to: "e4", note: "White takes the center with e4." },
+      { from: "e7", to: "e5", note: "Black mirrors the center." },
+      { from: "g1", to: "f3", note: "Knight to f3 attacks e5 and develops." },
+      { from: "b8", to: "c6", note: "Black defends e5 with the knight." },
+      { from: "f1", to: "c4", note: "Bishop to c4 creates pressure on f7." },
+      { from: "g8", to: "f6", note: "Black develops a knight." },
+      { from: "e1", to: "g1", note: "Castle now. Attack after your king is safe." },
+      { from: "f8", to: "c5", note: "Black develops the bishop." },
+      { from: "c2", to: "c3", note: "c3 prepares d4, so White can open the center later." }
+    ],
     tip: "The idea is not instant mate. The idea is fast development plus pressure on f7."
   },
   {
     title: "London Setup",
     goal: "A calm system opening that is hard to trick and easy to remember.",
     steps: ["1. d4: control the center.", "2. Bf4: develop the bishop outside the pawn chain.", "3. e3: support the center.", "4. Nf3 and Bd3: develop pieces naturally.", "5. O-O: castle, then look for Ne5 or c4 breaks."],
+    line: [
+      { from: "d2", to: "d4", note: "Move the pawn to d4. This controls the center." },
+      { from: "d7", to: "d5", note: "Black also takes center space." },
+      { from: "c1", to: "f4", note: "Move the bishop to f4 before blocking it with e3." },
+      { from: "g8", to: "f6", note: "Black develops a knight." },
+      { from: "e2", to: "e3", note: "e3 supports d4 and opens your other bishop." },
+      { from: "e7", to: "e6", note: "Black builds a solid center." },
+      { from: "g1", to: "f3", note: "Develop the knight toward the center." },
+      { from: "f8", to: "d6", note: "Black develops the bishop." },
+      { from: "f1", to: "d3", note: "Bishop to d3 points toward Black's king side." }
+    ],
     tip: "Use the London when you want a safe start and fewer opening traps."
   },
   {
     title: "Scholar's Mate",
     goal: "Attack the weak f7 square with queen and bishop.",
     steps: ["1. e4 e5", "2. Qh5 Nc6", "3. Bc4 Nf6?", "4. Qxf7#"],
+    line: [
+      { from: "e2", to: "e4", note: "Start by opening the queen and bishop." },
+      { from: "e7", to: "e5", note: "Black answers in the center." },
+      { from: "d1", to: "h5", note: "Queen to h5 attacks e5 and looks at f7." },
+      { from: "b8", to: "c6", note: "Black defends e5." },
+      { from: "f1", to: "c4", note: "Bishop to c4 adds a second attacker on f7." },
+      { from: "g8", to: "f6", note: "This is the mistake: Black lets the queen take f7." },
+      { from: "h5", to: "f7", note: "Queen captures f7: checkmate if Black cannot escape." }
+    ],
     tip: "This works only if Black ignores f7. Stronger players attack the queen with g6 or defend carefully."
   },
   {
     title: "Stop Scholar's Mate",
     goal: "Do not let queen and bishop gang up on f7.",
     steps: ["After Qh5, notice the attack on e5 and f7.", "Play Nc6 to defend e5.", "If Bc4 appears, play g6 to hit the queen.", "Develop Nf6 only when your e5 pawn and f7 square are safe.", "Never ignore a queen looking at your king pawns."],
+    line: [
+      { from: "e2", to: "e4", note: "White opens lines for the queen and bishop." },
+      { from: "e7", to: "e5", note: "Black takes the center too." },
+      { from: "d1", to: "h5", note: "White queen attacks e5 and looks toward f7." },
+      { from: "b8", to: "c6", note: "Black knight to c6 protects the e5 pawn." },
+      { from: "f1", to: "c4", note: "White bishop joins the queen against f7." },
+      { from: "g7", to: "g6", note: "Move the black pawn to g6. It attacks the queen and stops the easy mate." },
+      { from: "h5", to: "f3", note: "White queen usually moves away." },
+      { from: "g8", to: "f6", note: "Now Black develops the knight after the danger is handled." }
+    ],
     tip: "When the enemy queen comes out early, attack it while developing."
   },
   {
@@ -116,6 +180,9 @@ let playerColor = "w";
 let thinking = false;
 let coachMove = null;
 let coachText = "Start by fighting for the center and developing your pieces.";
+let currentTutorialIndex = 0;
+let lessonActive = false;
+let lessonStep = 0;
 
 function freshState() {
   const grid = Array.from({ length: 8 }, () => Array(8).fill(null));
@@ -163,6 +230,10 @@ function sameSquare(a, b) {
 
 function algebraic(pos) {
   return `${files[pos.c]}${8 - pos.r}`;
+}
+
+function fromAlgebraic(square) {
+  return { r: 8 - Number(square[1]), c: files.indexOf(square[0]) };
 }
 
 function opponent(color) {
@@ -444,6 +515,7 @@ function moveNotation(game, move, piece, captured) {
 
 function render() {
   const legal = legalMoves(state);
+  const lessonMove = currentLessonMove();
   const checkedKing = isInCheck(state, state.turn) ? findKing(state, state.turn) : null;
   boardEl.innerHTML = "";
   const rows = flipped ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7];
@@ -472,6 +544,8 @@ function render() {
       if (coachMove && (sameSquare(coachMove.from, { r, c }) || sameSquare(coachMove.to, { r, c }))) {
         square.classList.add("coach-move");
       }
+      if (lessonMove && sameSquare(lessonMove.from, { r, c })) square.classList.add("lesson-from");
+      if (lessonMove && sameSquare(lessonMove.to, { r, c })) square.classList.add("lesson-to");
       const hint = legalForSelected.find(move => move.to.r === r && move.to.c === c);
       if (hint) square.classList.add(piece ? "capture-hint" : "hint");
       if (checkedKing && checkedKing.r === r && checkedKing.c === c) square.classList.add("in-check");
@@ -492,6 +566,7 @@ function render() {
   renderCoach();
   document.getElementById("undo").disabled = thinking || state.history.length === 0;
   document.getElementById("hint").disabled = thinking || legal.length === 0 || (vsComputer && state.turn === "b");
+  renderLessonControls();
 }
 
 function renderStatus(legal) {
@@ -542,13 +617,27 @@ function capturedText(counts, color) {
 
 async function handleSquareClick(pos) {
   if (thinking || isComputerTurn()) return;
+  const lessonMove = currentLessonMove();
   const piece = pieceAt(state, pos);
   if (selected) {
     const move = legalForSelected.find(item => sameSquare(item.to, pos));
     if (move) {
+      if (lessonMove && (!sameSquare(move.from, lessonMove.from) || !sameSquare(move.to, lessonMove.to))) {
+        coachText = `In this lesson, move ${algebraic(lessonMove.from)} to ${algebraic(lessonMove.to)}.`;
+        render();
+        return;
+      }
       await playMove(move);
+      if (lessonMove) advanceLessonAfterMove(move);
       return;
     }
+  }
+  if (lessonMove && !sameSquare(pos, lessonMove.from)) {
+    selected = lessonMove.from;
+    legalForSelected = legalMoves(state).filter(move => sameSquare(move.from, lessonMove.from));
+    coachText = `Tap the highlighted piece on ${algebraic(lessonMove.from)}, then move it to ${algebraic(lessonMove.to)}.`;
+    render();
+    return;
   }
   if (piece && piece.color === state.turn) {
     selected = pos;
@@ -764,7 +853,114 @@ function scheduleComputerMove() {
   }, 250);
 }
 
+
+function currentLesson() {
+  return tutorials[currentTutorialIndex] || tutorials[0];
+}
+
+function currentLessonMove() {
+  if (!lessonActive) return null;
+  const step = currentLesson().line?.[lessonStep];
+  if (!step) return null;
+  return { ...step, from: fromAlgebraic(step.from), to: fromAlgebraic(step.to) };
+}
+
+function startLesson() {
+  const tutorial = currentLesson();
+  if (!tutorial.line?.length) return;
+  vsComputer = false;
+  document.getElementById("modeLocal").classList.add("active");
+  document.getElementById("modeComputer").classList.remove("active");
+  state = freshState();
+  selected = null;
+  legalForSelected = [];
+  thinking = false;
+  coachMove = null;
+  lessonActive = true;
+  lessonStep = 0;
+  showLessonMove();
+}
+
+function showLessonMove() {
+  const move = currentLessonMove();
+  if (!move) {
+    lessonActive = false;
+    selected = null;
+    legalForSelected = [];
+    coachText = "Lesson finished. You can keep playing from this position.";
+    render();
+    return;
+  }
+  selected = move.from;
+  legalForSelected = legalMoves(state).filter(item => sameSquare(item.from, move.from));
+  coachText = move.note;
+  render();
+}
+
+async function playCurrentLessonMove() {
+  const lessonMove = currentLessonMove();
+  if (!lessonMove) return;
+  const move = legalMoves(state).find(item => sameSquare(item.from, lessonMove.from) && sameSquare(item.to, lessonMove.to));
+  if (!move) {
+    coachText = "This lesson move is not legal from the current board. Restart the lesson to line it up again.";
+    render();
+    return;
+  }
+  await playMove(move);
+  advanceLessonAfterMove(move);
+}
+
+function advanceLessonAfterMove(move) {
+  const lessonMove = currentLessonMove();
+  if (!lessonMove || !sameSquare(move.from, lessonMove.from) || !sameSquare(move.to, lessonMove.to)) return;
+  lessonStep += 1;
+  window.setTimeout(showLessonMove, 120);
+}
+
+function replayLessonTo(stepIndex) {
+  const tutorial = currentLesson();
+  state = freshState();
+  selected = null;
+  legalForSelected = [];
+  coachMove = null;
+  lessonActive = true;
+  lessonStep = 0;
+  for (let i = 0; i < stepIndex; i++) {
+    const step = tutorial.line[i];
+    const from = fromAlgebraic(step.from);
+    const to = fromAlgebraic(step.to);
+    const move = legalMoves(state).find(item => sameSquare(item.from, from) && sameSquare(item.to, to));
+    if (move) applyMove(state, move);
+  }
+  lessonStep = stepIndex;
+  showLessonMove();
+}
+
+function renderLessonControls() {
+  const tutorial = currentLesson();
+  const hasLine = Boolean(tutorial.line?.length);
+  lessonControlsEl.hidden = !hasLine;
+  lessonCurrentEl.hidden = !hasLine;
+  if (!hasLine) return;
+  lessonStartEl.textContent = lessonActive ? "Restart lesson" : "Show on board";
+  lessonPrevEl.disabled = !lessonActive || lessonStep === 0;
+  lessonNextEl.disabled = !lessonActive;
+  const step = tutorial.line[lessonStep];
+  if (lessonActive && step) {
+    lessonCurrentEl.textContent = `Step ${lessonStep + 1} of ${tutorial.line.length}: ${step.from} to ${step.to}. ${step.note}`;
+  } else if (lessonActive) {
+    lessonCurrentEl.textContent = "Lesson finished. You can continue playing this position.";
+  } else {
+    lessonCurrentEl.textContent = "Tap Show on board to see the exact squares for this tutorial.";
+  }
+}
+
 function renderTutorial(index) {
+  currentTutorialIndex = index;
+  lessonActive = false;
+  lessonStep = 0;
+  selected = null;
+  legalForSelected = [];
   const tutorial = tutorials[index] || tutorials[0];
   tutorialTitleEl.textContent = tutorial.title;
   tutorialGoalEl.textContent = tutorial.goal;
@@ -810,10 +1006,17 @@ function reset() {
   thinking = false;
   coachMove = null;
   coachText = "Start by fighting for the center and developing your pieces.";
+  lessonActive = false;
+  lessonStep = 0;
   render();
   scheduleComputerMove();
 }
 
+lessonStartEl.addEventListener("click", startLesson);
+lessonPrevEl.addEventListener("click", () => {
+  if (lessonActive && lessonStep > 0) replayLessonTo(lessonStep - 1);
+});
+lessonNextEl.addEventListener("click", playCurrentLessonMove);
 document.getElementById("newGame").addEventListener("click", reset);
 document.getElementById("flip").addEventListener("click", () => {
   flipped = !flipped;
